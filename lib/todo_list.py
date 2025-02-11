@@ -29,4 +29,5 @@ class TodoList:
 		# Side-effects:
 		#   Marks all todos as complete
 		for task in self.tasks:
-			task.mark_complete()
+			if not task.get_is_completed():
+				task.mark_complete()

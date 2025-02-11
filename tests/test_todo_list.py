@@ -25,22 +25,27 @@ def many_todos():
 
 	def mark_complete_side_effect(todo):
 		todo.is_completed = True
+		todo.get_is_completed = Mock(return_value=True) 
+
 
 	todo1 = Mock()
 	todo1.task = "Walk the dog."
 	todo1.is_completed = False
+	todo1.get_is_completed = Mock(return_value=todo1.is_completed)
 	todo1.mark_complete.side_effect = lambda: mark_complete_side_effect(todo1)
 	todos.add(todo1)
 
 	todo2 = Mock()
 	todo2.task = "Wash the car."
 	todo2.is_completed = True
+	todo2.get_is_completed = Mock(return_value=todo2.is_completed)
 	todo2.mark_complete.side_effect = lambda: mark_complete_side_effect(todo2)
 	todos.add(todo2)
 
 	todo3 = Mock()
 	todo3.task = "Pay the bills."
 	todo3.is_completed = False
+	todo3.get_is_completed = Mock(return_value=todo3.is_completed)
 	todo3.mark_complete.side_effect = lambda: mark_complete_side_effect(todo3)
 	todos.add(todo3)
 
@@ -49,14 +54,14 @@ def many_todos():
 def test_incomplete_returns_list_of_incomplete_tasks(many_todos):
 	result = many_todos.incomplete()
 	assert len(result) == 2
-	assert all(not task.is_completed for task in result)
+	assert all(task.get_is_completed() is False for task in result)
 	assert result[0].task == "Walk the dog."
 	assert result[1].task == "Pay the bills."
 
 def test_complete_returns_list_of_complete_tasks(many_todos):
 	result = many_todos.complete()
 	assert len(result) == 1
-	assert all(task.is_completed for task in result)
+	assert all(task.get_is_completed() is True for task in result)
 	assert result[0].task == "Wash the car."
 
 def test_give_up_marks_all_tasks_as_complete(many_todos):
@@ -64,7 +69,11 @@ def test_give_up_marks_all_tasks_as_complete(many_todos):
 	assert len(many_todos.incomplete()) == 0
 	result = many_todos.complete()
 	assert len(result) == 3
-	assert all(task.is_completed for task in result)
+
+	for task in result:
+		print(f"Task: {task.task}, Is Completed: {task.get_is_completed()}")
+
+	assert all(task.get_is_completed() == True for task in result)
 	assert result[0].task == "Walk the dog."
 	assert result[1].task == "Wash the car."
 	assert result[2].task == "Pay the bills."
