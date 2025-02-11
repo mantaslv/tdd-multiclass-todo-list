@@ -43,6 +43,12 @@ def many_todos():
 def test_incomplete_returns_list_of_incomplete_tasks(many_todos):
 	result = many_todos.incomplete()
 	assert len(result) == 2
-	assert all(task.is_completed == False for task in result)
+	assert all(not task.is_completed for task in result)
 	assert result[0].task == "Walk the dog."
 	assert result[1].task == "Pay the bills."
+
+def test_complete_returns_list_of_complete_tasks(many_todos):
+	result = many_todos.complete()
+	assert len(result) == 1
+	assert all(task.is_completed for task in result)
+	assert result[0].task == "Wash the car."
