@@ -16,7 +16,7 @@ class TodoList:
 	def incomplete(self):
 		# Returns:
 		#   A list of Todo instances representing the todos that are not complete
-		return [Todo('a'), Todo('b')]
+		return [task for task in self.tasks if not task.is_completed]
 		
 	def complete(self):
 		# Returns:
