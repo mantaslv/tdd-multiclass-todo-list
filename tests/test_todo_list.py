@@ -1,4 +1,5 @@
 from lib.todo_list import TodoList
+from lib.todo import Todo
 from unittest.mock import Mock
 import pytest
 
@@ -8,7 +9,7 @@ def test_initialises_todo_list_with_empty_list():
 
 def test_adds_todo_to_task_list():
 	new_todos = TodoList()
-	todo_mock = Mock()
+	todo_mock = Mock(spec=Todo)
 	todo_mock.task = "Walk the dog."
 	todo_mock.is_completed = False
 
@@ -28,21 +29,21 @@ def many_todos():
 		todo.get_is_completed = Mock(return_value=True) 
 
 
-	todo1 = Mock()
+	todo1 = Mock(spec=Todo)
 	todo1.task = "Walk the dog."
 	todo1.is_completed = False
 	todo1.get_is_completed = Mock(return_value=todo1.is_completed)
 	todo1.mark_complete.side_effect = lambda: mark_complete_side_effect(todo1)
 	todos.add(todo1)
 
-	todo2 = Mock()
+	todo2 = Mock(spec=Todo)
 	todo2.task = "Wash the car."
 	todo2.is_completed = True
 	todo2.get_is_completed = Mock(return_value=todo2.is_completed)
 	todo2.mark_complete.side_effect = lambda: mark_complete_side_effect(todo2)
 	todos.add(todo2)
 
-	todo3 = Mock()
+	todo3 = Mock(spec=Todo)
 	todo3.task = "Pay the bills."
 	todo3.is_completed = False
 	todo3.get_is_completed = Mock(return_value=todo3.is_completed)

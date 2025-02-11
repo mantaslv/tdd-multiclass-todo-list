@@ -11,6 +11,8 @@ class TodoList:
 		#   Nothing
 		# Side-effects:
 		#   Adds the todo to the list of todos
+		if not isinstance(todo, Todo):
+			raise TypeError("Task must be of Todo type.")
 		self.tasks.append(todo)
 
 	def incomplete(self):
