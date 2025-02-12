@@ -1,3 +1,5 @@
+# File: lib/todo.py
+
 class Todo:
 	# Public Properties:
 	#   task: a string representing the task to be done
